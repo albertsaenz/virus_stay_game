@@ -3,8 +3,8 @@ import Play from './scenes/Play.js';
 import Menu from './scenes/Menu.js';
 import UI from './scenes/UI.js';
 const config = {
-    title: "vgame",
-    version: "0.0.1",
+    title: "CVGame",
+    version: "1.0.0",
     type: Phaser.AUTO,
     scale: {
         parent: "phaser_container",
@@ -13,7 +13,7 @@ const config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
-    backgroundColor: "#22a6b3",
+    backgroundColor: "#10375c",
     pixelArt: true,
     physics: {
         default: "arcade",
@@ -21,7 +21,6 @@ const config = {
             gravity: {
                 y: 2000
             },
-            debug:true,
         }
     },
     scene: [
@@ -31,5 +30,4 @@ const config = {
         Menu
     ]
 };
-
 new Phaser.Game(config);

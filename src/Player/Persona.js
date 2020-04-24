@@ -1,100 +1,84 @@
-class Persona extends Phaser.GameObjects.Sprite{
-    constructor(config){
-        super(config.scene, config.x, config.y, 'persona');
+class Persona extends Phaser.GameObjects.Sprite {
+    constructor(config) {
+        super(config.scene, config.x, config.y, "persona");
 
         this.scene = config.scene;
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
         this.setScale(2.3);
-        this.body.setSize(15,28);
-        this.body.setOffset(7,4);
+        this.body.setSize(15, 28);
+        this.body.setOffset(7, 4);
 
         this.body.setBounce(0.2);
         this.body.setCollideWorldBounds(true);
         this.jumping = false;
-        this.atack= false;
+        this.atack = false;
 
-        this.anims.play('persona_idle');
-        this.prevMov='persona_idle';
+        this.anims.play("persona_idle");
+        this.prevMov = "persona_idle";
 
-        this.hitDelay=false;
-
+        this.hitDelay = false;
         this.cursor = this.scene.input.keyboard.createCursorKeys();
-
         this.life = 3;
-        // this.cursor.space.on("down",()=>{});
-        
     }
-    plataforma(){
-        this.jumping=false;
+
+    plataforma() {
+        this.jumping = false;
     }
-    update(){
-        if(this.cursor.left.isDown){
+
+    update() {
+        if (this.cursor.left.isDown) {
             this.body.setVelocityX(-200);
-            this.flipX= true;
-            this.body.setSize(15,28);
-            this.body.setOffset(10,4);
-            if(this.prevMov !== 'left' && !this.jumping){
-                this.prevMov = 'left';
-                this.anims.play('persona_walk');
+            this.flipX = true;
+            this.body.setSize(15, 28);
+            this.body.setOffset(10, 4);
+            if (this.prevMov !== "left" && !this.jumping) {
+                this.prevMov = "left";
+                this.anims.play("persona_walk");
             }
-        } else if(this.cursor.right.isDown){
+        } else if (this.cursor.right.isDown) {
             this.body.setVelocityX(200);
-            this.flipX= false;
-            this.body.setSize(15,28);
-            this.body.setOffset(7,4);
-            if(this.prevMov !== 'right' && !this.jumping){
-                this.prevMov = 'right';
-                this.anims.play('persona_walk');
+            this.flipX = false;
+            this.body.setSize(15, 28);
+            this.body.setOffset(7, 4);
+            if (this.prevMov !== "right" && !this.jumping) {
+                this.prevMov = "right";
+                this.anims.play("persona_walk");
             }
-        }
-        else {
+        } else {
             this.body.setVelocityX(0);
-            if(this.prevMov !== 'persona_idle' && !this.jumping){
-                this.prevMov = 'persona_idle';
-                this.anims.play('persona_idle');
+            if (this.prevMov !== "persona_idle" && !this.jumping) {
+                this.prevMov = "persona_idle";
+                this.anims.play("persona_idle");
             }
         }
 
-        if(Phaser.Input.Keyboard.JustDown(this.cursor.up) && !this.jumping && this.body.blocked.down){
+        if (
+            Phaser.Input.Keyboard.JustDown(this.cursor.up) &&
+            !this.jumping &&
+            this.body.blocked.down
+        ) {
             this.jumping = true;
             this.body.setVelocityY(-560);
-            if(this.prevMov !== 'jump'){
-                this.prevMov = 'jump';
-                this.anims.play('persona_jump');
+            if (this.prevMov !== "jump") {
+                this.prevMov = "jump";
+                this.anims.play("persona_jump");
             }
-        } else if(this.body.blocked.down){
+        } else if (this.body.blocked.down) {
             this.jumping = false;
         }
-        
-        // if(Phaser.Input.Keyboard.JustDown(this.cursor.space)&& !this.jumping &&!this.atack){
-        //     if(this.prevMov !== 'space' ){
-        //         this.anims.play('Persona_attack_sword');
-        //         this.atack= true;
-        //         this.scene.time.addEvent({
-        //             delay: 650,
-        //             callback:()=>{
-        //                 this.prevMov = 'space';
-        //                 this.atack= false;
-        //             }
-        //         });
-        //     }
-        // }
-        
-
-
-        
     }
-    bombCollision() {
-        if(!this.hitDelay) {
+
+    covidCollision() {
+        if (!this.hitDelay) {
             this.hitDelay = true;
 
-            // this.scene.sound.play('draw');
+            this.scene.sound.play("hit", { volume: 0.03 });
             this.life--;
-            this.scene.registry.events.emit('remove_life');
+            this.scene.registry.events.emit("remove_life");
 
-            if(this.life === 0) {
-                this.scene.registry.events.emit('game_over');
+            if (this.life === 0) {
+                this.scene.registry.events.emit("game_over");
             }
 
             this.setTint(0x1abc9c);
@@ -103,19 +87,17 @@ class Persona extends Phaser.GameObjects.Sprite{
                 callback: () => {
                     this.hitDelay = false;
                     this.clearTint();
-                }
+                },
             });
         }
     }
 
     pildoraCollision() {
-        if(this.life < 3){
+        if (this.life < 3) {
             this.life++;
-            this.scene.registry.events.emit('add_life');
-        }else if(this.life >= 3){
-
+            this.scene.registry.events.emit("add_life");
+        } else if (this.life >= 3) {
         }
-      
     }
 }
 

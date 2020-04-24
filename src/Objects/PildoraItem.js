@@ -4,10 +4,10 @@ class PildoraItem extends Phaser.Physics.Arcade.Group {
         this.scene = config.scene;
         this.scene.add.existing(this);
         this.scene.physics.world.enable(this);
-        this.addTomatoItem();
+        this.addPildoraItem();
     }
 
-    addTomatoItem() {
+    addPildoraItem() {
         this.create(
             Phaser.Math.Between(0, this.scene.scale.width),
             Phaser.Math.Between(0, this.scene.scale.height-64),
@@ -17,7 +17,7 @@ class PildoraItem extends Phaser.Physics.Arcade.Group {
 
     destroyItem() {
         this.children.entries[0].destroy();
-        this.addTomatoItem();
+        this.addPildoraItem();
     }
 
 }
